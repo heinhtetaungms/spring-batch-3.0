@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.wavemoney.middleware.api.custommapper.kyc.CustomerMapper">
+
+    <insert id="saveCustomer" parameterType="org.wavemoney.middleware.api.custommapper.dto.CustomerQueryParam">
+        INSERT INTO customer (id, first_name, last_name, email, gender, contact_no, country, dob)
+        VALUES (
+                   #{id},
+                   #{firstName},
+                   #{lastName},
+                   #{email},
+                   #{gender},
+                   #{contactNo},
+                   #{country},
+                   #{dob}
+               )
+    </insert>
+
+</mapper>
+
