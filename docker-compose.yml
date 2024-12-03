@@ -5,9 +5,11 @@ networks:
 volumes:
   postgres-db:
     driver: local
+  oracle-db:
+    driver: local
 
 services:
-  db:
+  postgres-db:
     image: postgres:alpine
     container_name: postgres-db
     environment:
@@ -15,10 +17,27 @@ services:
       - POSTGRES_DB=postgres_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "max_prepared_transactions=100"
     networks:
       - spring_batch
     ports:
       - 5432:5432
     volumes:
       - postgres-db:/var/lib/postgresql/data
+  oracle-db:
+    image: gvenzl/oracle-free:slim
+    container_name: oracle-db
+    environment:
+      - TZ=Asia/Yangon
+      - ORACLE_PASSWORD=oracle
+    networks:
+      - spring_batch
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-db:/opt/oracle/oradata
+
 

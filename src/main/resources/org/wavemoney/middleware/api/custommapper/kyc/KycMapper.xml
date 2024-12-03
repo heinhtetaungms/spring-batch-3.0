@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.wavemoney.middleware.api.custommapper.kyc.KycMapper">
+
+    <update id="updateKyc" parameterType="org.wavemoney.middleware.api.dto.request.kyc.UpdateKycQueryParam">
+        UPDATE
+            ${dbSchema}.kyc
+        SET
+            status = #{status}
+        WHERE
+            msisdn = #{msisdn}
+    </update>
+
+    <resultMap id="kycResultMap" type="org.wavemoney.middleware.api.dto.response.kyc.Kyc">
+        <result column="id" property="id"/>
+        <result column="msisdn" property="msisdn"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+
+    <select id="getKyc" parameterType="org.wavemoney.middleware.api.dto.request.kyc.SearchKycQueryParam"
+            resultMap="kycResultMap">
+        SELECT k.id,
+               k.msisdn,
+               k.name,
+               k.status
+        FROM
+            ${dbSchema}.kyc k
+        WHERE
+            k.msisdn = #{msisdn}
+    </select>
+
+</mapper>
+

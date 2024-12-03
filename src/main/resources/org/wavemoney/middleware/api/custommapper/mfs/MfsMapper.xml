@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.wavemoney.middleware.api.custommapper.mfs.MfsMapper">
+
+    <update id="updateMfs" parameterType="org.wavemoney.middleware.api.dto.request.mfs.UpdateMfsQueryParam">
+        UPDATE
+            ${dbSchema}.MFS
+        SET
+            IS_DELETE = #{isDelete}
+        WHERE
+            MSISDN = #{msisdn}
+    </update>
+
+    <resultMap id="mfsResultMap" type="org.wavemoney.middleware.api.dto.response.mfs.Mfs">
+        <result column="ID" property="id"/>
+        <result column="MSISDN" property="msisdn"/>
+        <result column="BALANCE" property="balance"/>
+        <result column="CATEGORY" property="category"/>
+        <result column="IS_DELETE" property="isDelete"/>
+    </resultMap>
+
+    <select id="getMfs" parameterType="org.wavemoney.middleware.api.dto.request.mfs.SearchMfsQueryParam"
+            resultMap="mfsResultMap">
+        SELECT m.ID,
+               m.MSISDN,
+               m.BALANCE,
+               m.CATEGORY,
+               m.IS_DELETE
+        FROM
+            ${dbSchema}.MFS m
+        WHERE
+            m.MSISDN = #{msisdn}
+    </select>
+
+</mapper>
+
