@@ -10,6 +10,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.database.support.DefaultDataFieldMaxValueIncrementerFactory;
+import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -49,7 +50,7 @@ public class BatchConfig {
         JobRepositoryFactoryBean factory = new JobRepositoryFactoryBean();
         factory.setDataSource(dataSource);
         factory.setTransactionManager(transactionManager);
-        factory.setIsolationLevelForCreate("ISOLATION_DEFAULT");
+        factory.setIsolationLevelForCreate("ISOLATION_READ_COMMITTED");
         factory.setTablePrefix("BATCH_");  // Add table prefix
         factory.setDatabaseType("POSTGRES"); // Specify database type
         factory.setMaxVarCharLength(1000); // Set max varchar length
@@ -90,11 +91,10 @@ public class BatchConfig {
                              CustomerWriter customerWriter,
                              PlatformTransactionManager transactionManager) {
         return new StepBuilder("customerStep", jobRepository)
-                .<CustomerRecord, CustomerRecord>chunk(5) // Smaller chunk size for better transaction management
+                .<CustomerRecord, CustomerRecord>chunk(10, transactionManager) // Smaller chunk size for better transaction management
                 .reader(customerReader)
                 .processor(customerProcessor)
                 .writer(customerWriter)
-                .transactionManager(transactionManager)
                 .build();
     }
 }
