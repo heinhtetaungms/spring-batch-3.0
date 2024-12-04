@@ -32,28 +32,30 @@ public class CustomerProcessor implements ItemProcessor<CustomerRecord, Customer
     public CustomerRecord process(CustomerRecord record) {
         log.info("[Before Process] Record from csv => {}", record);
         // Validate KYC
-        SearchKycQueryParam kycQueryParam = new SearchKycQueryParam(
-                                            record.getMsisdn(),
-                                            psqlDbSchema );
+        SearchKycQueryParam kycQueryParam = SearchKycQueryParam.builder()
+                                            .msisdn(record.msisdn())
+                                            .dbSchema(psqlDbSchema)
+                                            .build();
         Kyc kyc = kycMapper.getKyc(kycQueryParam);
         log.info("kyc: {}", kyc);
-        if (kyc == null || kyc.getStatus() != 3) {
-            log.warn("Kyc conditions not met for MSISDN: {}", record.getMsisdn());
+        if (kyc == null || kyc.status() != 3) {
+            log.warn("Kyc conditions not met for MSISDN: {}", record.msisdn());
             return null; // Skip this record
         }
 
         // Validate MFS
-        SearchMfsQueryParam mfsQueryParam = new SearchMfsQueryParam(
-                                            record.getMsisdn(),
-                                            oracleDbSchema );
+        SearchMfsQueryParam mfsQueryParam = SearchMfsQueryParam.builder()
+                                            .msisdn(record.msisdn())
+                                            .dbSchema(oracleDbSchema)
+                                            .build();
         Mfs mfs = mfsMapper.getMfs(mfsQueryParam);
         log.info("mfs: {}", mfs);
-        if (mfs == null || mfs.getBalance() != 0) {
-            log.warn("Mfs conditions not met for MSISDN: {}", record.getMsisdn());
+        if (mfs == null || mfs.balance() != 0) {
+            log.warn("Mfs conditions not met for MSISDN: {}", record.msisdn());
             return null; // Skip this record
         }
 
-        log.info("[After Process] Record processed successfully for MSISDN: {}", record.getMsisdn());
+        log.info("[After Process] Record processed successfully for MSISDN: {}", record.msisdn());
         return record;
     }
 }

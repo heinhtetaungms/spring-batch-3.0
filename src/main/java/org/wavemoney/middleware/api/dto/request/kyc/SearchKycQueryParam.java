@@ -1,15 +1,10 @@
 package org.wavemoney.middleware.api.dto.request.kyc;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SearchKycQueryParam {
-    private String msisdn;
-    private String dbSchema;
+@Builder
+public record SearchKycQueryParam(
+        String msisdn,
+        String dbSchema
+) {
 }

@@ -47,45 +47,46 @@ public class CustomerWriter implements ItemWriter<CustomerRecord> {
                         return true;
                     } catch (Exception e) {
                         status.setRollbackOnly();
-                        log.error("Transaction failed for MSISDN: {}", record.getMsisdn(), e);
+                        log.error("Transaction failed for MSISDN: {}", record.msisdn(), e);
                         return false;
                     }
                 });
             } catch (Exception e) {
-                log.error("Failed to process record: {}", record.getMsisdn(), e);
+                log.error("Failed to process record: {}", record.msisdn(), e);
                 // Don't rethrow, if fail will handle transactional for that dedicated one - allow other records to process
             }
         }
     }
 
     private void processRecord(CustomerRecord record) {
-        UpdateKycQueryParam kycParam = new UpdateKycQueryParam(
-                record.getMsisdn(),
-                8,
-                psqlDbSchema
-        );
+        UpdateKycQueryParam kycParam = UpdateKycQueryParam.builder()
+                                        .msisdn(record.msisdn())
+                                        .status(8)
+                                        .dbSchema(psqlDbSchema)
+                                        .build();
+
         int kycResult = kycMapper.updateKyc(kycParam);
 
         if (kycResult == 0) {
-            throw new RuntimeException("Failed to update KYC for MSISDN: " + record.getMsisdn());
+            throw new RuntimeException("Failed to update KYC for MSISDN: " + record.msisdn());
         }
 
-        UpdateMfsQueryParam mfsParam = new UpdateMfsQueryParam(
-                record.getMsisdn(),
-                1,
-                oracleDbSchema
-        );
+        UpdateMfsQueryParam mfsParam = UpdateMfsQueryParam.builder()
+                                        .msisdn(record.msisdn())
+                                        .isDelete(1)
+                                        .dbSchema(oracleDbSchema)
+                                        .build();
         int mfsResult = mfsMapper.updateMfs(mfsParam);
 
         if (mfsResult == 0) {
-            throw new RuntimeException("Failed to update MFS for MSISDN: " + record.getMsisdn());
+            throw new RuntimeException("Failed to update MFS for MSISDN: " + record.msisdn());
         }
 
         // Simulate failure for rollback test
-        if (record.getMsisdn().equals("9123456785")) {
+        if (record.msisdn().equals("9123456785")) {
             throw new RuntimeException("Simulated failure for rollback test");
         }
 
-        log.info("Successfully updated KYC and MFS for MSISDN: {}", record.getMsisdn());
+        log.info("Successfully updated KYC and MFS for MSISDN: {}", record.msisdn());
     }
 }

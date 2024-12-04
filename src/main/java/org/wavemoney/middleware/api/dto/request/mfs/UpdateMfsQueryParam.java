@@ -1,13 +1,11 @@
 package org.wavemoney.middleware.api.dto.request.mfs;
 
-import lombok.*;
+import lombok.Builder;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class UpdateMfsQueryParam {
-    private String msisdn;
-    private int isDelete;
-    private String dbSchema;
+@Builder
+public record UpdateMfsQueryParam(
+        String msisdn,
+        int isDelete,
+        String dbSchema
+) {
 }

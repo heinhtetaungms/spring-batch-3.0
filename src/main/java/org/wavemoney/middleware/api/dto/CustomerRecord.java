@@ -1,15 +1,15 @@
 package org.wavemoney.middleware.api.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-@Data
-public class CustomerRecord {
-    private String msisdn;
-    private double balance;
-    private String category;
-    private int status;
+@Builder
+public record CustomerRecord(
+        String msisdn,
+        double balance,
+        String category,
+        int status
+) {
 }
