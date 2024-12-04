@@ -38,7 +38,6 @@ public class CustomerWriter implements ItemWriter<CustomerRecord> {
         for (CustomerRecord record : chunk) {
             TransactionTemplate template = new TransactionTemplate(transactionManager);
             template.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-            template.setTimeout(600);
 
             try {
                 template.execute(status -> {
