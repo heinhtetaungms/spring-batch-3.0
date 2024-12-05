@@ -21,7 +21,7 @@ public class CustomerReader implements ItemStreamReader<CustomerRecord> {
     @PostConstruct
     public void init() {
         reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource("customers.csv"));
+        reader.setResource(new ClassPathResource("customer_records.csv"));
         reader.setLinesToSkip(1);
         reader.setEncoding("UTF-8");
         
@@ -31,7 +31,7 @@ public class CustomerReader implements ItemStreamReader<CustomerRecord> {
         
         BeanWrapperFieldSetMapper<CustomerRecord> fieldSetMapper = new BeanWrapperFieldSetMapper<>();
         fieldSetMapper.setTargetType(CustomerRecord.class);
-        
+
         lineMapper.setLineTokenizer(tokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
         

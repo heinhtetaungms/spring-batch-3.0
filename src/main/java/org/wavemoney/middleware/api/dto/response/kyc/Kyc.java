@@ -1,12 +1,14 @@
 package org.wavemoney.middleware.api.dto.response.kyc;
 
 import lombok.Builder;
+import lombok.Data;
+import lombok.Setter;
 
 @Builder
-public record Kyc(
-        int id,
-        String msisdn,
-        String name,
-        int status
-) {
+@Data
+public class Kyc {
+    private int id;
+    private String msisdn;
+    private String name;
+    private int status;
 }

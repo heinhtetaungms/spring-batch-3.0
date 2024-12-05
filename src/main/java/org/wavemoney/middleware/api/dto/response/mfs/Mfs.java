@@ -1,14 +1,15 @@
 package org.wavemoney.middleware.api.dto.response.mfs;
 
 import lombok.Builder;
+import lombok.Data;
 
 
 @Builder
-public record Mfs(
-        int id,
-        String msisdn,
-        double balance,
-        String category,
-        int isDelete
-) {
+@Data
+public class Mfs{
+    private int id;
+    private String msisdn;
+    private double balance;
+    private String category;
+    private int isDelete;
 }

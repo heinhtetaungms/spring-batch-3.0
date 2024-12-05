@@ -1,0 +1,28 @@
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+  jta:
+    atomikos:
+      properties:
+        max-timeout: 600000
+        default-jta-timeout: 600000
+        enable-logging: true
+        serial-jta-transactions: true
+
+psql-db-deboard:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres_db
+    username: postgres
+    password: postgres
+    dbSchema: public
+    maxPoolSize: 50
+oracle-db-deboard:
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/FREE
+    username: my_schema
+    password: my_password
+    dbSchema: my_schema
+    maxPoolSize: 50
