@@ -39,21 +39,17 @@ public class CustomerWriter implements ItemWriter<CustomerRecord> {
             TransactionTemplate template = new TransactionTemplate(transactionManager);
             template.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 
-            try {
-                template.execute(status -> {
-                    try {
-                        processRecord(record);
-                        return true;
-                    } catch (Exception e) {
-                        status.setRollbackOnly();
-                        log.error("Transaction failed for MSISDN: {}", record.getMsisdn(), e);
-                        return false;
-                    }
-                });
-            } catch (Exception e) {
-                log.error("Failed to process record: {}", record.getMsisdn(), e);
-                // Don't rethrow, if fail will handle transactional for that dedicated one - allow other records to process
-            }
+            template.execute(status -> {
+                try {
+                    processRecord(record);
+                    log.info("Successfully processed MSISDN: {}", record.getMsisdn());
+                    return true;
+                } catch (Exception e) {
+                    status.setRollbackOnly();
+                    log.error("Failed to process MSISDN: {} - Error: {}", record.getMsisdn(), e.getMessage());
+                    return false;
+                }
+            });
         }
     }
 
