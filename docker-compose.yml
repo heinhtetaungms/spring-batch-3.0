@@ -17,10 +17,6 @@ services:
       - POSTGRES_DB=postgres_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    command:
-      - "postgres"
-      - "-c"
-      - "max_prepared_transactions=200"
     networks:
       - spring_batch
     ports:

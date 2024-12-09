@@ -21,8 +21,8 @@ psql-db-deboard:
     maxPoolSize: 50
 oracle-db-deboard:
   datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/FREE
-    username: my_schema
-    password: my_password
-    dbSchema: my_schema
+    url: jdbc:oracle:thin:@//localhost:1521/FREEPDB1
+    username: SYSTEM
+    password: oracle
+    dbSchema: SYSTEM
     maxPoolSize: 50

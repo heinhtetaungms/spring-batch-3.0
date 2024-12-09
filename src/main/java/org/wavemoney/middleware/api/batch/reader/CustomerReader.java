@@ -21,7 +21,7 @@ public class CustomerReader implements ItemStreamReader<CustomerRecord> {
     @PostConstruct
     public void init() {
         reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource("customer_records.csv"));
+        reader.setResource(new ClassPathResource("customers.csv"));
         reader.setLinesToSkip(1);
         reader.setEncoding("UTF-8");
         

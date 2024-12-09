@@ -42,7 +42,7 @@ public class PostgresDataSourceConfig {
         pgXaDataSource.setUrl(dbUrl);
         pgXaDataSource.setUser(username);
         pgXaDataSource.setPassword(password);
-        pgXaDataSource.setPrepareThreshold(0);  // Disable server-side prepare
+        //pgXaDataSource.setPrepareThreshold(0);  // Disable server-side prepare
 
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setXaDataSource(pgXaDataSource);
